@@ -1,0 +1,91 @@
+plugins {
+
+id 'org.springframework.boot' version '2.1.6.RELEASE'
+
+id 'java'
+
+id "org.sonarqube" version "2.7"
+
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "application"
+apply plugin: 'org.sonarqube'
+apply plugin: 'jacoco'
+
+group = 'com.cg'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+mainClassName = "com.cg.zookeeper.ZookeeperApplication"
+
+repositories {
+
+mavenCentral()
+
+}
+
+test{
+ignoreFailures=true
+}
+
+sonarqube {
+
+    properties {
+
+        property 'sonar.projectName', 'zookeeper'
+
+    }
+
+}
+
+ext {
+
+set('springCloudVersion', "Greenwich.SR1")
+
+}
+
+dependencies {
+
+implementation 'org.springframework.boot:spring-boot-starter'
+
+implementation 'org.springframework.boot:spring-boot-starter-web'
+
+implementation 'org.springframework.cloud:spring-cloud-starter'
+
+implementation 'org.springframework.cloud:spring-cloud-zookeeper-config'
+
+implementation 'org.springframework.cloud:spring-cloud-starter-zookeeper-config'
+
+implementation 'org.springframework.cloud:spring-cloud-starter-zookeeper-discovery'
+
+compile group: 'org.sonarsource.scanner.maven', name: 'sonar-maven-plugin', version: '3.2'
+
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+compile group: 'org.apache.curator', name: 'curator-framework', version: '4.2.0'
+
+compile group: 'org.jacoco', name: 'jacoco-maven-plugin', version: '0.7.9'
+
+}
+
+dependencyManagement {
+
+imports {
+
+mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+
+}
+
+}
+ jacocoTestReport {
+
+    reports {
+
+        xml.enabled true
+
+    }
+
+}
